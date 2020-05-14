@@ -1,0 +1,9 @@
+{{#d-modal-body id="scheduled-reply-modal"}}
+  {{#each times as |t|}}
+    {{d-button
+      translatedLabel=(i18n "scheduled_reply.modal_btn_label" t=t)
+      action=(action "schedule" t)
+      class="btn-large btn-default"
+    }}
+  {{/each}}
+{{/d-modal-body}}

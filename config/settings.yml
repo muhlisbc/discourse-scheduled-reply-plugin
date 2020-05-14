@@ -1,0 +1,4 @@
+plugins:
+  scheduled_reply_enabled:
+    default: true
+    client: true

@@ -1,0 +1,17 @@
+{{#if siteSettings.scheduled_reply_enabled}}
+  {{#if currentUser.staff}}
+    {{#unless args.model.whisper}}
+      {{#if (sr-eq args.model.action "reply")}}
+        {{#if (sr-eq args.model.archetypeId "regular")}}
+          {{d-button
+            action=(action "scheduleReply")
+            label=(unless site.mobileView "scheduled_reply.btn_label")
+            disabled=composer.disableSubmit
+            class="btn-primary scheduled-reply-button"
+            icon="far-clock"
+          }}
+        {{/if}}
+      {{/if}}
+    {{/unless}}
+  {{/if}}
+{{/if}}

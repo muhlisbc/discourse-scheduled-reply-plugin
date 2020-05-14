@@ -1,0 +1,17 @@
+#scheduled-reply-modal {
+  .btn {
+    display: block;
+    min-width: 200px;
+    margin-bottom: 10px;
+  }
+}
+
+.scheduled-reply-button {
+  margin-right: 10px;
+}
+
+.scheduled-reply {
+  .topic-avatar, .topic-body {
+    border-top: none;
+  }
+}
