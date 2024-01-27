@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 # name: scheduled-reply
-# version: 0.1.1
+# version: 0.2.0
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: https://github.com/muhlisbc/discourse-scheduled-reply-plugin
 
 %i[common desktop mobile].each do |layout|
-  register_asset "stylesheets/scheduled-reply/#{layout}.scss", layout
+  register_asset("stylesheets/scheduled-reply/#{layout}.scss", layout)
 end
 
-enabled_site_setting :scheduled_reply_enabled
+enabled_site_setting(:scheduled_reply_enabled)
 
 after_initialize do
-  register_svg_icon('far-clock')
+  register_svg_icon("far-clock")
   add_permitted_post_create_param(:scheduled_reply_time)
-  register_post_custom_field_type('scheduled_reply_time', :integer)
+  register_post_custom_field_type("scheduled_reply_time", :integer)
 
   add_to_serializer(:post, :scheduled_reply_time) do
-    object.custom_fields['scheduled_reply_time'].to_i
+    object.custom_fields["scheduled_reply_time"].to_i
   end
 
   class ::PostsController
@@ -25,7 +25,7 @@ after_initialize do
 
     def check_scheduled_reply_time
       if params[:scheduled_reply_time].to_i.positive?
-        params[:whisper] = 'true'
+        params[:whisper] = "true"
       end
     end
   end
@@ -34,7 +34,7 @@ after_initialize do
     srt = opts[:scheduled_reply_time].to_i
 
     if srt.positive?
-      post.custom_fields['scheduled_reply_time'] = srt
+      post.custom_fields["scheduled_reply_time"] = srt
       post.save_custom_fields(true)
       post.publish_change_to_clients!(:revised)
 
@@ -57,7 +57,7 @@ after_initialize do
         creator = post.user
 
         post.destroy
-        post.publish_change_to_clients! :deleted
+        post.publish_change_to_clients!(:deleted)
 
         return if post.deleted_at.present?
 
@@ -69,5 +69,15 @@ after_initialize do
         PostCreator.create!(creator, opts)
       end
     end
+  end
+
+  # add staff to whispers groups
+  staff_group_id = Group::AUTO_GROUPS[:staff]
+  group_ids = SiteSetting.whispers_allowed_groups.to_s.split("|").map(&:to_i)
+
+  if !group_ids.include?(staff_group_id)
+    group_ids << staff_group_id
+
+    SiteSetting.whispers_allowed_groups = group_ids.join("|")
   end
 end

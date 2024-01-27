@@ -2,7 +2,9 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 import Composer from "discourse/models/composer";
 
 function initWithApi(api) {
-  if (!Discourse.SiteSettings.scheduled_reply_enabled) return;
+  const siteSettings = api.container.lookup("service:site-settings");
+
+  if (!siteSettings.scheduled_reply_enabled) return;
 
   Composer.serializeOnCreate("scheduled_reply_time");
 
@@ -52,7 +54,11 @@ function initWithApi(api) {
 
   api.reopenWidget("post", {
     buildClasses(attrs) {
-      const classes = this._super(...arguments);
+      let classes = this._super(...arguments) || [];
+
+      if (!(classes instanceof Array)) {
+        classes = [classes];
+      }
 
       if (attrs.scheduled_reply_time) {
         classes.push("scheduled-reply");

@@ -1,0 +1,11 @@
+<DModal @closeModal={{@closeModal}} @title={{i18n "scheduled_reply.modal_title"}} class="scheduled-reply-modal">
+  <:body>
+    {{#each this.times as |t|}}
+      {{d-button
+        translatedLabel=(i18n "scheduled_reply.modal_btn_label" t=t)
+        action=(action "schedule" t)
+        class="btn-large btn-default schedule-time-btn"
+      }}
+    {{/each}}
+  </:body>
+</DModal>

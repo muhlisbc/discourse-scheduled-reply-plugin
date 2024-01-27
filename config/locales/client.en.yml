@@ -3,3 +3,4 @@ en:
     scheduled_reply:
       modal_btn_label: "+{{t}} Hours"
       btn_label: "Schedule Reply"
+      modal_title: "Schedule in:"
