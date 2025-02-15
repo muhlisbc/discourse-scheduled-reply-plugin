@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # name: scheduled-reply
-# version: 0.2.0
+# version: 0.3.0
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: https://github.com/muhlisbc/discourse-scheduled-reply-plugin
 
@@ -65,6 +65,8 @@ after_initialize do
 
         opts.delete(:scheduled_reply_time)
         opts.delete(:post_type)
+
+        opts[:raw] = post.raw
 
         PostCreator.create!(creator, opts)
       end
